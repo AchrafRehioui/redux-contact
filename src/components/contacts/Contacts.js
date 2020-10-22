@@ -1,32 +1,16 @@
 import React, { Component } from 'react';
 import Contact from './Contact';
+import { connect } from 'react-redux';
+import { getContacts } from '../../actions/contactActions';
 
 class Contacts extends Component {
-  state = {
-    contacts: [
-      {
-        id: 1,
-        name: 'Achraf1',
-        email: 'test1@test.fr',
-        phone: '1234'
-      },
-      {
-        id: 2,
-        name: 'Achraf2',
-        email: 'test2@test.fr',
-        phone: '2234'
-      },
-      {
-        id: 3,
-        name: 'Achraf3',
-        email: 'test3@test.fr',
-        phone: '3234'
-      }
-    ]
-  };
+  
+  componentDidMount() {
+    this.props.getContacts();
+  }
 
   render() {
-    const { contacts } = this.state;
+    const { contacts } = this.props;
     return (
       <React.Fragment>
         <h1 className="display-4 mb-2">
@@ -38,6 +22,15 @@ class Contacts extends Component {
       </React.Fragment>
     );
   }
+
 }
 
-export default Contacts;
+const mapStateToProps = (state) => {
+  return {
+    contacts: state.myContact.contacts
+  }
+}
+
+
+
+export default connect(mapStateToProps, { getContacts })(Contacts);
