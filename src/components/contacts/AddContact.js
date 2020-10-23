@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import TextInputGroup from '../layout/TextInputGroup';
+import { connect } from 'react-redux';
+import { addContact } from '../../actions/contactActions';
+import uuid from 'uuid';
+
 
 class AddContact extends Component {
+
   state = {
     name: '',
     email: '',
@@ -14,31 +19,33 @@ class AddContact extends Component {
 
     const { name, email, phone } = this.state;
 
-    // Check For Errors
+    // Vérifier pour les erreurs
     if (name === '') {
       this.setState({ errors: { name: 'Nom est obligatoire !' } });
       return;
     }
 
-    if (email === '') {
+    if (email === ''){
       this.setState({ errors: { email: 'Email est obligatoire !' } });
       return;
     }
 
-    if (phone === '') {
-      this.setState({ errors: { phone: 'Phone est obligatoire' } });
+    if (phone === ''){
+      this.setState({ errors: { phone: 'Phone est obligatoire !' } });
       return;
     }
 
     const newContact = {
+      id: uuid(),
       name,
       email,
       phone
     };
 
-    //// SUBMIT CONTACT ////
+    //// Validation ////
+    this.props.addContact(newContact)
 
-    // Clear State
+    // vider le state
     this.setState({
       name: '',
       email: '',
@@ -96,4 +103,4 @@ class AddContact extends Component {
   }
 }
 
-export default AddContact;
+export default connect(null, { addContact } )(AddContact);
