@@ -1,38 +1,21 @@
 const initialState = {
-    contacts: [
-        {
-          id: 1,
-          name: 'Achraf1',
-          email: 'test1@test.fr',
-          phone: '1234'
-        },
-        {
-          id: 2,
-          name: 'Achraf2',
-          email: 'test2@test.fr',
-          phone: '2234'
-        },
-        {
-          id: 3,
-          name: 'Achraf3',
-          email: 'test3@test.fr',
-          phone: '3234'
-        },
-        {
-          id: 4,
-          name: 'Achraf4',
-          email: 'test4@test.fr',
-          phone: '4234'
-        }
-      ]
+    contacts: [],
+    contact: {}
 };
 
 export default function(state= initialState, action){
     switch(action.type) {
-        case 'GET_CONTACTS': 
+        case 'GET_CONTACTS':
+        console.log(state); 
         return {
-          ...state
+          ...state,
+          contacts: action.payload
         }
+        case 'GET_CONTACT':
+        return {
+          ...state,
+          contact: action.payload
+        }  
         case 'DELETE_CONTACT':
         return {
           ...state,
@@ -42,7 +25,13 @@ export default function(state= initialState, action){
         return {
           ...state,
           contacts: [action.payload, ...state.contacts]
-        }  
+        } 
+        case 'UPDATE_CONTACT':
+        return {
+          ...state,
+          contacts: state.contacts.map(contact => contact.id === action.payload.id ? (contact = action.payload) : contact )
+
+        }   
         default: {
             return state;
         }

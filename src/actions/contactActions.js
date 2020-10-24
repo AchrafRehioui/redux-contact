@@ -1,19 +1,51 @@
-export const getContacts = () => {
-    return {
-        type: 'GET_CONTACTS'
-      }
+import axios from 'axios';
+
+export const getContacts = () => async dispatch => {
+  
+  const res = await axios.get('https://jsonplaceholder.typicode.com/users');
+  dispatch( {
+    type: 'GET_CONTACTS',
+    payload: res.data
+  });
 }
 
-export const deleteContact = (id) => {
-  return {
+export const getContact = (id) => async dispatch => {
+
+  const res = await axios.get('https://jsonplaceholder.typicode.com/users/'+ id );
+  
+  dispatch( {
+    type: 'GET_CONTACT',
+    payload: res.data
+  });
+};
+
+export const deleteContact = (id) => dispatch => {
+  axios.delete(`https://jsonplaceholder.typicode.com/users/${id}`)
+  .then(res => {
+    dispatch({
       type: 'DELETE_CONTACT',
       payload: id
-    }
+    })
+   })
+   .catch(err => {
+     alert(err)
+   })
 }
 
-export const addContact = (contact) => {
-  return {
-      type: 'ADD_CONTACT',
-      payload: contact
-    }
+export const addContact = (contact) => async dispatch => {
+  const res = await axios.post('https://jsonplaceholder.typicode.com/users/', contact);
+
+ dispatch({
+    type: 'ADD_CONTACT',
+    payload: res.data
+  });
+}
+
+export const updateContact = (contact) => async dispatch => {
+  const res = await axios.put(`https://jsonplaceholder.typicode.com/users/${contact.id}`, contact);
+
+ dispatch({
+    type: 'UPDATE_CONTACT',
+    payload: res.data
+  });
 }
